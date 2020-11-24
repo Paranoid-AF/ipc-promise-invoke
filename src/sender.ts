@@ -9,10 +9,10 @@ const callResolve: Record<string,
   reject: (...args: any) => any
 }> = { }
 
-export const sender = (childProcess: ChildProcess, options: Options = {}) => {
+export const sender = (sendTo: NodeJS.Process | ChildProcess, options: Options = {}) => {
   const finalOptions = Object.assign(defaultSenderOption, options)
 
-  childProcess.on('message', (msg: ResBody) => {
+  sendTo.on('message', (msg: ResBody) => {
     if(msg.ipcSignature === signature && msg.uuid && msg.uuid in callResolve) {
       if(msg.status === ResponseType.SUCCESS) {
         callResolve[msg.uuid].resolve(msg.payload)
@@ -27,8 +27,8 @@ export const sender = (childProcess: ChildProcess, options: Options = {}) => {
     const reqId = uuidv4()
     return new Promise((resolve, reject) => {
       callResolve[reqId] = { resolve, reject }
-      if(childProcess) {
-        childProcess.send({
+      if(sendTo.send) {
+        sendTo.send({
           channel,
           payload,
           ipcSignature: signature,
