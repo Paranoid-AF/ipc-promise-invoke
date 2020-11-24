@@ -8,7 +8,7 @@ export const resolver = (resolveFrom: NodeJS.Process | ChildProcess = process) =
 
   const addChannel = (channel: string, action: (...args: any) => any) => {
     if(channel in channels) {
-      throw new Error('A channel with the same name already exists!')
+      throw new Error(`A channel with the same name '${channel}' already exists!`)
     } else {
       channels[channel] = action
     }
@@ -18,7 +18,7 @@ export const resolver = (resolveFrom: NodeJS.Process | ChildProcess = process) =
     if(channel in channels) {
       delete channels[channel]
     } else {
-      throw new Error('No such channel added to current process.')
+      throw new Error(`No such channel called '${channel}' added.`)
     }
   }
   
@@ -40,7 +40,7 @@ export const resolver = (resolveFrom: NodeJS.Process | ChildProcess = process) =
         }
       } else {
         status = ResponseType.FAILED
-        payload = new Error("No such channel added to the target resolver process.")
+        payload = new Error(`No such channel called '${msg.channel}' added.`)
       }
   
       if(resolveFrom.send) {

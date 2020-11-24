@@ -39,7 +39,7 @@ export const sender = (sendTo: NodeJS.Process | ChildProcess, options: Options =
       if(finalOptions.timeout > 0) {
         setTimeout(() => {
           if(reqId in callResolve) {
-            reject(new Error("Time out."))
+            reject(new Error(`Time out for request on channel '${channel}': ${payload}`))
           }
         }, finalOptions.timeout)
       }
