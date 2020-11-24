@@ -1,0 +1,21 @@
+{
+  "name": "ipc-promise-invoke",
+  "version": "1.0.0",
+  "description": "Define actions and invoke them in another process, with Node's built-in ipc.",
+  "main": "dist/index.js",
+  "repository": "https://github.com/Paranoid-AF/ipc-promise-invoke",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "rimraf ./dist/* && tsc --p tsconfig.json --declaration"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.9",
+    "@types/uuid": "^8.3.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.1.2"
+  },
+  "dependencies": {
+    "uuid": "^8.3.1"
+  }
+}
