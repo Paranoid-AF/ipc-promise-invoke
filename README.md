@@ -1,0 +1,1 @@
+See [example code](https://github.com/Paranoid-AF/ipc-promise-invoke/tree/master/example) for usage.
