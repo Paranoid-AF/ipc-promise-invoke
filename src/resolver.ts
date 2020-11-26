@@ -27,7 +27,7 @@ export const resolver = (resolveFrom: NodeJS.Process | ChildProcess = process) =
   }
   
   const listener = async (msg: ReqBody) => {
-    if(msg.ipcSignature === signature && msg.uuid) {
+    if(msg.ipcSignature === signature && msg.uuid && msg.type === 'REQUEST') {
       let status: ResponseType = ResponseType.SUCCESS
       let payload: any = null
       
@@ -48,7 +48,8 @@ export const resolver = (resolveFrom: NodeJS.Process | ChildProcess = process) =
           status,
           payload,
           uuid: msg.uuid,
-          ipcSignature: signature
+          ipcSignature: signature,
+          type: 'RESPONSE'
         } as ResBody)
       }
     }
@@ -68,7 +69,8 @@ export interface ResBody {
   uuid: string,
   status: ResponseType,
   payload: any,
-  ipcSignature: string
+  ipcSignature: string,
+  type: 'RESPONSE'
 }
 
 export enum ResponseType {

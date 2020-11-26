@@ -13,7 +13,7 @@ export const sender = (sendTo: NodeJS.Process | ChildProcess, options: Options =
   const finalOptions = Object.assign(defaultSenderOption, options)
 
   sendTo.on('message', (msg: ResBody) => {
-    if(msg.ipcSignature === signature && msg.uuid && msg.uuid in callResolve) {
+    if(msg.ipcSignature === signature && msg.uuid && msg.uuid in callResolve && msg.type === 'RESPONSE') {
       if(msg.status === ResponseType.SUCCESS) {
         callResolve[msg.uuid].resolve(msg.payload)
       } else {
@@ -32,7 +32,8 @@ export const sender = (sendTo: NodeJS.Process | ChildProcess, options: Options =
           channel,
           payload,
           ipcSignature: signature,
-          uuid: reqId
+          uuid: reqId,
+          type: 'REQUEST'
         } as ReqBody)
       }
 
@@ -53,7 +54,8 @@ export interface ReqBody {
   channel: string,
   payload: any,
   ipcSignature?: string,
-  uuid?: string
+  uuid?: string,
+  type: 'REQUEST'
 }
 
 export interface Options {
