@@ -12,7 +12,7 @@ const callResolve: Record<string,
 export const sender = (sendTo: NodeJS.Process | ChildProcess, options: Options = {}) => {
   const finalOptions = Object.assign(defaultSenderOption, options)
 
-  sendTo.on('message', (msg: ResBody) => {
+  const listener = (msg: ResBody) => {
     if(msg.ipcSignature === signature && msg.uuid && msg.uuid in callResolve && msg.type === 'RESPONSE') {
       if(msg.status === ResponseType.SUCCESS) {
         callResolve[msg.uuid].resolve(msg.payload)
@@ -21,9 +21,11 @@ export const sender = (sendTo: NodeJS.Process | ChildProcess, options: Options =
       }
       delete callResolve[msg.uuid]
     }
-  })
+  }
 
-  return (channel: string, payload?: any) => {
+  sendTo.on('message', listener)
+
+  const send = (channel: string, payload?: any) => {
     const reqId = uuidv4()
     return new Promise((resolve, reject) => {
       callResolve[reqId] = { resolve, reject }
@@ -48,6 +50,12 @@ export const sender = (sendTo: NodeJS.Process | ChildProcess, options: Options =
 
     })
   }
+
+  const disband = () => {
+    sendTo.removeListener('message', listener)
+  }
+
+  return [ send, disband ]
 }
 
 export interface ReqBody {

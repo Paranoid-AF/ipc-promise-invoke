@@ -57,11 +57,11 @@ export const resolver = (resolveFrom: NodeJS.Process | ChildProcess = process) =
 
   resolveFrom.on('message', listener)
 
-  return {
+  return [
     addChannel,
     cancelChannel,
     disband
-  }
+  ]
 }
 
 

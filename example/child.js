@@ -1,13 +1,13 @@
-const resolver = require('..').resolver()
-resolver.addChannel('table-tenis', async (val) => {
+const [ addChannel, cancelChannel, disband ] = require('..').resolver()
+addChannel('table-tenis', async (val) => {
   // Simulate operations that take some time.
   const serverResponse = await new Promise((resolve, reject) => {
     let delay, text
     if(val === 'ping') {
-      delay = 5000
+      delay = 10
       text = 'pong'
     } else {
-      delay = 1200
+      delay = 1
       text = `Let's all love Lain!`
     }
     setTimeout(() => {
@@ -21,5 +21,5 @@ resolver.addChannel('table-tenis', async (val) => {
 
 // Disband to stop the event loop when ipc is no longer needed.
 setTimeout(() => {
-  resolver.disband()
-}, 15000)
+  disband()
+}, 60000)
