@@ -1,21 +1,13 @@
 const [ addChannel, cancelChannel, disband ] = require('..').resolver()
-addChannel('table-tenis', async (val) => {
+addChannel('table-tenis', async (val1, val2) => {
   // Simulate operations that take some time.
   const serverResponse = await new Promise((resolve, reject) => {
-    let delay, text
-    if(val === 'ping') {
-      delay = 10
-      text = 'pong'
-    } else {
-      delay = 1
-      text = `Let's all love Lain!`
-    }
+    console.log(val1, val2)
     setTimeout(() => {
-      resolve(text)
-    }, delay)
-  })
-
-  return val + ' pong ' + serverResponse
+      resolve('handled!')
+    }, 3000)
+  })  
+  return 'pong ' + serverResponse
 })
 
 
