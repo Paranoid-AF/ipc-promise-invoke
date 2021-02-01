@@ -55,7 +55,7 @@ export const sender = (sendTo: NodeJS.Process | ChildProcess, options: Options =
     sendTo.removeListener('message', listener)
   }
 
-  return [ send, disband ]
+  return [ send, disband ] as [ typeof send, typeof disband]
 }
 
 export interface ReqBody {

@@ -60,6 +60,10 @@ export const resolver = (resolveFrom: NodeJS.Process | ChildProcess = process) =
     addChannel,
     cancelChannel,
     disband
+  ] as [
+    typeof addChannel,
+    typeof cancelChannel,
+    typeof disband
   ]
 }
 
