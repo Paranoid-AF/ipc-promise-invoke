@@ -1,6 +1,6 @@
 {
   "name": "ipc-promise-invoke",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Define actions and invoke them in another process, a wrapper of Node's built-in ipc.",
   "main": "dist/index.js",
   "repository": "https://github.com/Paranoid-AF/ipc-promise-invoke",
