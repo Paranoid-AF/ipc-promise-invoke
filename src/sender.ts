@@ -3,6 +3,8 @@ import { v4 as uuidv4 } from 'uuid'
 import { signature, defaultSenderOption } from './constant'
 import { ResBody, ResponseType } from './resolver'
 
+const errorPrefix = `[ipc-promise-invoke] Error on sender - `
+
 const callResolve: Record<string,
 {
   resolve: (...args: any) => any,
@@ -43,7 +45,7 @@ export const sender = (sendTo: NodeJS.Process | ChildProcess, options: Options =
         setTimeout(() => {
           if(reqId in callResolve) {
             delete callResolve[reqId]
-            reject(new Error(`Time out for request on channel '${channel}': ${payload}`))
+            reject(new Error(`${errorPrefix}Time out for request on channel '${channel}': ${payload}`))
           }
         }, finalOptions.timeout)
       }

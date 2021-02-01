@@ -2,13 +2,14 @@ import { ChildProcess } from 'child_process'
 import { signature } from './constant'
 import { ReqBody } from './sender'
 
+const errorPrefix = `[ipc-promise-invoke] Error on resolver - `
 
 export const resolver = (resolveFrom: NodeJS.Process | ChildProcess = process) => {
   const channels: Record<string, (...args: any) => any> = {}
 
   const addChannel = (channel: string, action: (...args: any) => any) => {
     if(channel in channels) {
-      throw new Error(`A channel with the same name '${channel}' already exists!`)
+      throw new Error(`${errorPrefix}A channel with the same name '${channel}' already exists!`)
     } else {
       channels[channel] = action
     }
@@ -18,7 +19,7 @@ export const resolver = (resolveFrom: NodeJS.Process | ChildProcess = process) =
     if(channel in channels) {
       delete channels[channel]
     } else {
-      throw new Error(`No such channel called '${channel}' added.`)
+      throw new Error(`${errorPrefix}No such channel called '${channel}' added.`)
     }
   }
   
@@ -35,11 +36,11 @@ export const resolver = (resolveFrom: NodeJS.Process | ChildProcess = process) =
           payload = await Promise.resolve(channels[msg.channel](...msg.payload))
         } catch(err) {
           status = ResponseType.FAILED
-          payload = err
+          payload = `${errorPrefix}${err.stack}`
         }
       } else {
         status = ResponseType.FAILED
-        payload = new Error(`No such channel called '${msg.channel}' added.`)
+        payload = `${errorPrefix}No such channel called '${msg.channel}' added.`
       }
   
       if(resolveFrom.send) {
