@@ -30,10 +30,9 @@ export const resolver = (resolveFrom: NodeJS.Process | ChildProcess = process) =
     if(msg.ipcSignature === signature && msg.uuid && msg.type === 'REQUEST') {
       let status: ResponseType = ResponseType.SUCCESS
       let payload: any = null
-      
       if(msg.channel in channels) {
         try {
-          payload = await Promise.resolve(channels[msg.channel](msg.payload))
+          payload = await Promise.resolve(channels[msg.channel](...msg.payload))
         } catch(err) {
           status = ResponseType.FAILED
           payload = err

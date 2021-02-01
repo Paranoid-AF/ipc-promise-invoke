@@ -25,7 +25,7 @@ export const sender = (sendTo: NodeJS.Process | ChildProcess, options: Options =
 
   sendTo.on('message', listener)
 
-  const send = (channel: string, payload?: any) => {
+  const send = (channel: string, ...payload: any) => {
     const reqId = uuidv4()
     return new Promise((resolve, reject) => {
       callResolve[reqId] = { resolve, reject }
