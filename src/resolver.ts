@@ -36,7 +36,7 @@ export const resolver = (resolveFrom: NodeJS.Process | ChildProcess = process) =
           payload = await Promise.resolve(channels[msg.channel](...msg.payload))
         } catch(err) {
           status = ResponseType.FAILED
-          payload = `${errorPrefix}${err.stack}`
+          payload = `${errorPrefix}${err}`
         }
       } else {
         status = ResponseType.FAILED
