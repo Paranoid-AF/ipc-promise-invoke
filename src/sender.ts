@@ -2,6 +2,7 @@ import type { ChildProcess } from 'child_process'
 import { v4 as uuidv4 } from 'uuid'
 import { signature, defaultSenderOption } from './constant'
 import { ResBody, ResponseType } from './resolver'
+import { ErrorThrower } from './error'
 
 const errorPrefix = `[ipc-promise-invoke] Error on sender - `
 
@@ -19,7 +20,7 @@ export const sender = (sendTo: NodeJS.Process | ChildProcess, options: Options =
       if(msg.status === ResponseType.SUCCESS) {
         callResolve[msg.uuid].resolve(msg.payload)
       } else {
-        callResolve[msg.uuid].reject(msg.payload)
+        callResolve[msg.uuid].reject(ErrorThrower(msg.payload))
       }
       delete callResolve[msg.uuid]
     }

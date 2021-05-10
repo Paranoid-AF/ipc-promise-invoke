@@ -1,6 +1,7 @@
 import { ChildProcess } from 'child_process'
 import { signature } from './constant'
 import { ReqBody } from './sender'
+import { IpcErrorBuilder } from './error'
 
 const errorPrefix = `[ipc-promise-invoke] Error on resolver - `
 
@@ -36,11 +37,11 @@ export const resolver = (resolveFrom: NodeJS.Process | ChildProcess = process) =
           payload = await Promise.resolve(channels[msg.channel](...msg.payload))
         } catch(err) {
           status = ResponseType.FAILED
-          payload = `${errorPrefix}${err.stack}`
+          payload = IpcErrorBuilder(err)
         }
       } else {
         status = ResponseType.FAILED
-        payload = `${errorPrefix}No such channel called '${msg.channel}' added.`
+        payload = IpcErrorBuilder(new Error(`${errorPrefix}No such channel called '${msg.channel}' added.`))
       }
   
       if(resolveFrom.send) {

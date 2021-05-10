@@ -3,6 +3,7 @@ addChannel('table-tenis', async (val1, val2) => {
   // Simulate operations that take some time.
   const serverResponse = await new Promise((resolve, reject) => {
     console.log(val1, val2)
+    // reject(new Error('bruh'))
     setTimeout(() => {
       resolve('handled!')
     }, 3000)
